@@ -9,12 +9,21 @@ fn main() {
         println!("Uso: todo [add|list|done] [argumentos]");
         return;
     }
-    println!("Hello, world!");
 
     let command = &args[1];
 
     match command.as_str() {
-        "add" => println!("Añadiendo tarea: {}", args[2]),
+        "add" => {
+            if args.len() < 3 {
+                println!("Error: Debes escribir una descripción para la tarea.");
+            } else {
+                let description = &args[2];
+                match add_task(description) {
+                    Ok(_) => println!("✅ Tarea guardada con éxito."),
+                    Err(e) => println!("❌ Error al guardar: {}", e),
+                }
+            }
+        }
         "list" => println!("Listando tareas"),
         _ => println!("Comando no reconocido"),
     }
@@ -34,7 +43,7 @@ fn add_task(description: &str) -> std::io::Result<()> {
     Ok(())
 }
 
-struct Task {
+struct _Task {
     id: u32,
     description: String,
     done: bool,
